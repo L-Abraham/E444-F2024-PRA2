@@ -2,7 +2,7 @@ from flask_bootstrap import Bootstrap
 from flask import Flask,render_template, session,redirect,url_for,flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField,validators
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "dddddd"
@@ -13,7 +13,9 @@ def uoft_email_validator(form,field):
 
 class NameForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
-    email = StringField("What is your email?",validators=[DataRequired(),uoft_email_validator])
+    email = StringField("What is your email?", 
+                    validators=[DataRequired(), Email(message="Please include an '@' in the email address. It seems you are missing the '@'."), uoft_email_validator])
+
     submit = SubmitField("Submit")
 
 @app.route("/",methods=['GET','POST'])
